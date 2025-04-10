@@ -30,6 +30,12 @@ const ContentDetails = () => {
   const token = localStorage.getItem("Token");
 
   useEffect(() => {
+    if (content?.isVip === false) {
+        linkvertise("1329936", { blacklist: ["discord.gg", "t.me"] });
+    }
+  }, [content?.isVip]);
+
+  useEffect(() => {
     const fetchContentDetails = async () => {
       try {
         setLoading(true);
@@ -89,11 +95,6 @@ const ContentDetails = () => {
     }
   };
 
-  useEffect(() => {
-          if (content?.isVip === false) {
-              linkvertise("1329936", { whitelist: [] });
-          }
-        }, [content?.isVip]);
 
   if (loading) {
     return (

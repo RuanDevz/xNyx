@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Filter, TrendingUp, Crown } from 'lucide-react';
-import Masonry from 'react-masonry-css';
 import { useTheme } from '../../contexts/ThemeContext';
 import Loading from '../Loading/Loading';
 
@@ -11,7 +10,7 @@ import { ContentCard } from './ContentCard';
 import { Pagination } from './Pagination';
 import { SidebarWrapper } from './SidebarWrapper';
 import { TrendingCard } from './TrendingCard';
-import { ITEMS_PER_PAGE, BREAKPOINTS } from './constants';
+import { ITEMS_PER_PAGE } from './constants';
 import type { LinkItem, Category } from './types';
 
 const VipContent = () => {
@@ -62,7 +61,6 @@ const VipContent = () => {
         fetchLinks();
     }, [token]);
 
-    
 
     const popularLinks = useMemo(() => {
         return [...links]
@@ -217,11 +215,7 @@ const VipContent = () => {
                         </div>
                     ) : (
                         <>
-                            <Masonry
-                                breakpointCols={BREAKPOINTS}
-                                className="my-masonry-grid"
-                                columnClassName="my-masonry-grid_column"
-                            >
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
                                 {paginatedLinks.map((link) => (
                                     <ContentCard
                                         key={link.id}
@@ -231,7 +225,7 @@ const VipContent = () => {
                                         onViewClick={handleViewClick}
                                     />
                                 ))}
-                            </Masonry>
+                            </div>
 
                             <Pagination
                                 currentPage={currentPage}

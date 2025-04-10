@@ -114,11 +114,7 @@ const HeaderLogged: React.FC = () => {
           {/* Logo */}
           <Link to="/" className="group flex items-center space-x-3">
             <div className="relative">
-              <Flame className={`w-8 h-8 ${
-                theme === 'dark'
-                  ? 'text-emerald-400 group-hover:text-emerald-300'
-                  : 'text-emerald-500 group-hover:text-emerald-600'
-              } transition-all duration-300 transform group-hover:scale-110`} />
+              
               <div className="absolute inset-0 bg-emerald-400/20 blur-xl rounded-full animate-pulse" />
             </div>
             <div className="relative">

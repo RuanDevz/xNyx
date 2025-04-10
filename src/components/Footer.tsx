@@ -33,17 +33,15 @@ const Footer = () => {
       links: [
         { label: "Discord", href: "https://discord.gg/SAPZmTTeuN", icon: MessageCircle },
         { label: "Telegram", href: "https://t.me/+u0Qu9SkPd8EyMzcx", icon: Send },
-        { label: "Twitter", href: "https://twitter.com", icon: Twitter },
-        { label: "Instagram", href: "https://instagram.com", icon: Instagram }
       ]
     },
     {
       title: "Support",
       links: [
-        { label: "Help Center", href: "/help" },
+        { label: "Help Center", href: "https://discord.gg/SAPZmTTeuN" },
         { label: "Contact Us", href: "mailto:contact@xnyxleaks.com" },
-        { label: "Report Issue", href: "/report" },
-        { label: "Feedback", href: "/feedback" }
+        { label: "Report Issue", href: "https://discord.gg/SAPZmTTeuN" },
+        { label: "Feedback", href: "https://discord.gg/SAPZmTTeuN" }
       ]
     }
   ];
@@ -64,11 +62,7 @@ const Footer = () => {
                 className="flex items-center"
                 whileHover={{ scale: 1.02 }}
               >
-                <Flame className={`w-8 h-8 ${
-                  theme === "dark" 
-                    ? "text-emerald-400" 
-                    : "text-emerald-500"
-                }`} />
+               
                 <span className={`ml-2 text-2xl font-black bg-gradient-to-r ${
                   theme === "dark"
                     ? "from-emerald-400 via-teal-300 to-emerald-400"
@@ -83,47 +77,6 @@ const Footer = () => {
             }`}>
               Your trusted source for the latest content and exclusive releases. Join our community and stay updated with premium features.
             </p>
-            <div className="mt-6 flex space-x-4">
-              <motion.a
-                whileHover={{ scale: 1.1 }}
-                href="https://youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`p-2 rounded-full ${
-                  theme === "dark" 
-                    ? "bg-gray-800 hover:bg-gray-700" 
-                    : "bg-gray-100 hover:bg-gray-200"
-                }`}
-              >
-                <Youtube className="w-5 h-5" />
-              </motion.a>
-              <motion.a
-                whileHover={{ scale: 1.1 }}
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`p-2 rounded-full ${
-                  theme === "dark" 
-                    ? "bg-gray-800 hover:bg-gray-700" 
-                    : "bg-gray-100 hover:bg-gray-200"
-                }`}
-              >
-                <Twitter className="w-5 h-5" />
-              </motion.a>
-              <motion.a
-                whileHover={{ scale: 1.1 }}
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`p-2 rounded-full ${
-                  theme === "dark" 
-                    ? "bg-gray-800 hover:bg-gray-700" 
-                    : "bg-gray-100 hover:bg-gray-200"
-                }`}
-              >
-                <Instagram className="w-5 h-5" />
-              </motion.a>
-            </div>
           </div>
 
           {/* Links Sections */}

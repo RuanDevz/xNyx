@@ -11,12 +11,6 @@ export const ContentCard: React.FC<ContentCardProps> = ({
     onCardClick,
     onViewClick,
 }) => {
-    useEffect(() => {
-        // Only apply linkvertise if it's not a VIP link
-        if (!link.isVip) {
-            linkvertise("1329936", { whitelist: [] });
-        }
-    }, [link.isVip]);
 
     const handleViewClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.stopPropagation();

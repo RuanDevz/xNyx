@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { LogIn, Lock, Mail, Loader2, AlertCircle, Flame, Shield, Zap, CheckCircle } from "lucide-react";
+import { motion } from "framer-motion";
+import { LogIn, Lock, Mail, Loader2, AlertCircle, Shield, Zap, CheckCircle, Sun, Moon } from "lucide-react";
 import axios from "axios";
+import { useTheme } from "../contexts/ThemeContext";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const theme = 'dark';
+  const { theme, toggleTheme } = useTheme();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,28 +40,37 @@ function Login() {
 
   const features = [
     {
-      icon: <Shield className="w-6 h-6 text-emerald-400" />,
+      icon: <Shield className="w-6 h-6 text-primary" />,
       title: "Secure Access",
       description: "Enterprise-grade security protocols"
     },
     {
-      icon: <Zap className="w-6 h-6 text-emerald-400" />,
+      icon: <Zap className="w-6 h-6 text-primary" />,
       title: "Fast Performance",
       description: "Lightning-fast response times"
     },
     {
-      icon: <CheckCircle className="w-6 h-6 text-emerald-400" />,
+      icon: <CheckCircle className="w-6 h-6 text-primary" />,
       title: "Reliable Service",
       description: "99.9% uptime guarantee"
     }
   ];
 
   return (
-    <div className="min-h-screen relative bg-gray-900 text-gray-200 flex items-center justify-center">
+    <div className={`min-h-screen relative ${theme === 'dark' ? 'bg-gray-900 text-gray-200' : 'bg-gray-50 text-gray-900'} flex items-center justify-center transition-colors duration-300`}>
+      {/* Theme Toggle */}
+      <button
+        onClick={toggleTheme}
+        className={`absolute top-4 right-4 p-2 rounded-full ${
+          theme === 'dark' ? 'bg-gray-800 text-yellow-400' : 'bg-white text-gray-900 shadow-md'
+        } hover:scale-110 transition-all duration-300`}
+      >
+      </button>
+
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[120px] -top-48 -right-24 animate-pulse" />
-        <div className="absolute w-[400px] h-[400px] bg-emerald-500/10 rounded-full blur-[100px] -bottom-32 -left-24 animate-pulse delay-300" />
+        <div className={`absolute w-[500px] h-[500px] ${theme === 'dark' ? 'bg-emerald-500/10' : 'bg-emerald-500/5'} rounded-full blur-[120px] -top-48 -right-24 animate-pulse`} />
+        <div className={`absolute w-[400px] h-[400px] ${theme === 'dark' ? 'bg-emerald-500/10' : 'bg-emerald-500/5'} rounded-full blur-[100px] -bottom-32 -left-24 animate-pulse delay-300`} />
       </div>
 
       {/* Main Content */}
@@ -71,19 +81,23 @@ function Login() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="inline-flex items-center justify-center p-4 bg-emerald-500/10 rounded-2xl backdrop-blur-sm border border-emerald-500/20 mb-6"
+            className={`inline-flex items-center justify-center p-4 ${
+              theme === 'dark' ? 'bg-emerald-500/10 border-emerald-500/20' : 'bg-white shadow-lg'
+            } rounded-2xl backdrop-blur-sm border mb-6`}
           >
-            <Flame className="w-8 h-8 text-emerald-400" />
-            <span className="ml-2 text-2xl font-bold bg-gradient-to-r from-emerald-400 to-teal-500 bg-clip-text text-transparent">
+            <span className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-teal-500 bg-clip-text text-transparent">
               xNyxLeaks
             </span>
           </motion.div>
         </div>
 
-        {/* Login Form */}
-        <div className="bg-gray-800/50 backdrop-blur-xl border border-gray-700/30 rounded-3xl p-8">
+        <div className={`${
+          theme === 'dark' 
+            ? 'bg-gray-800/50 backdrop-blur-xl border-gray-700/30' 
+            : 'bg-white/80 backdrop-blur-xl shadow-xl'
+        } border rounded-3xl p-8`}>
           <h2 className="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-emerald-400 to-teal-500 bg-clip-text text-transparent">
-            Welcome Back
+            Login
           </h2>
 
           {errorMessage && (
@@ -99,7 +113,7 @@ function Login() {
 
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300">
+              <label htmlFor="email" className={`block text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                 Email
               </label>
               <div className="relative">
@@ -109,7 +123,11 @@ function Login() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700/50 border-emerald-500/20 text-gray-100 placeholder-gray-400 focus:border-emerald-500 focus:ring-emerald-500/20 transition-all"
+                  className={`block w-full pl-10 pr-4 py-3 rounded-xl ${
+                    theme === 'dark'
+                      ? 'bg-gray-700/50 text-gray-100 placeholder-gray-400'
+                      : 'bg-gray-50 text-gray-900 placeholder-gray-500'
+                  } border-emerald-500/20 focus:border-emerald-500 focus:ring-emerald-500/20 transition-all`}
                   placeholder="Enter your email"
                   required
                 />
@@ -117,7 +135,7 @@ function Login() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300">
+              <label htmlFor="password" className={`block text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                 Password
               </label>
               <div className="relative">
@@ -127,7 +145,11 @@ function Login() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700/50 border-emerald-500/20 text-gray-100 placeholder-gray-400 focus:border-emerald-500 focus:ring-emerald-500/20 transition-all"
+                  className={`block w-full pl-10 pr-4 py-3 rounded-xl ${
+                    theme === 'dark'
+                      ? 'bg-gray-700/50 text-gray-100 placeholder-gray-400'
+                      : 'bg-gray-50 text-gray-900 placeholder-gray-500'
+                  } border-emerald-500/20 focus:border-emerald-500 focus:ring-emerald-500/20 transition-all`}
                   placeholder="Enter your password"
                   required
                 />
@@ -138,13 +160,17 @@ function Login() {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  className="rounded border border-emerald-500/20 bg-gray-700/50 text-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                  className={`rounded border border-emerald-500/20 ${
+                    theme === 'dark' ? 'bg-gray-700/50' : 'bg-gray-50'
+                  } text-emerald-500 focus:ring-2 focus:ring-emerald-500/20`}
                 />
-                <span className="ml-2 text-sm text-gray-400">Remember me</span>
+                <span className={`ml-2 text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                  Remember me
+                </span>
               </label>
               <button
                 type="button"
-                className="text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
+                className="text-sm font-medium text-emerald-500 hover:text-emerald-400 transition-colors"
                 onClick={() => window.location.href = '#/forgot-password'}
               >
                 Forgot password?
@@ -173,11 +199,11 @@ function Login() {
           </form>
 
           <div className="mt-8 text-center">
-            <p className="text-gray-400">
+            <p className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
               Don't have an account?{" "}
               <button
                 onClick={() => window.location.href = '/register'}
-                className="font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
+                className="font-medium text-emerald-500 hover:text-emerald-400 transition-colors"
               >
                 Sign up
               </button>

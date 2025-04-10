@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Eye, Zap } from 'lucide-react';
 import { TrendingCardProps } from './types';
+import { linkvertise } from '../../utils/linkvertise';
 
 export const TrendingCard: React.FC<TrendingCardProps> = ({
     link,
@@ -8,6 +9,7 @@ export const TrendingCard: React.FC<TrendingCardProps> = ({
     onCardClick,
     onViewClick,
 }) => {
+
     return (
         <div
             onClick={() => onCardClick(link.slug)}

@@ -19,8 +19,10 @@ export const TrendingCard: React.FC<TrendingCardProps> = ({
 }) => {
 
     useEffect(() => {
-        linkvertise("1329936", { whitelist: [] });
-    }, []);
+          linkvertise("1329936", {
+            blacklist: ["discord.gg", "discord.com", "t.me", "telegram.me", "telegram.dog"]
+          });
+      }, []);
     return (
         <div
             onClick={() => onCardClick(link.slug)}

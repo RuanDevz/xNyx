@@ -59,7 +59,7 @@ const FreeContent = () => {
     }, []);
 
     useEffect(() =>{
-            linkvertise("1329936", { whitelist: [] });
+            linkvertise("1329936", { blacklist: ["discord.gg", "t.me"] });
     },[])
 
     const popularLinks = useMemo(() => {
