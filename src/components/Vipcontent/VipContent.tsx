@@ -1,0 +1,284 @@
+import React, { useState, useEffect, useMemo } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Filter, TrendingUp, Crown } from 'lucide-react';
+import Masonry from 'react-masonry-css';
+import { useTheme } from '../../contexts/ThemeContext';
+import Loading from '../Loading/Loading';
+
+import { Filters } from './Filters';
+import { ContentCard } from './ContentCard';
+import { Pagination } from './Pagination';
+import { SidebarWrapper } from './SidebarWrapper';
+import { TrendingCard } from './TrendingCard';
+import { ITEMS_PER_PAGE, BREAKPOINTS } from './constants';
+import type { LinkItem, Category } from './types';
+
+const VipContent = () => {
+    const [links, setLinks] = useState<LinkItem[]>([]);
+    const [filteredLinks, setFilteredLinks] = useState<LinkItem[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [searchName, setSearchName] = useState<string>("");
+    const [selectedMonth, setSelectedMonth] = useState<string>("");
+    const [selectedCategory, setSelectedCategory] = useState<string>("");
+    const [sortOption, setSortOption] = useState<string>("mostRecent");
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [showFilters, setShowFilters] = useState(false);
+    const navigate = useNavigate();
+    const { theme } = useTheme();
+    const token = localStorage.getItem("Token");
+
+    useEffect(() => {
+        const fetchLinks = async () => {
+            try {
+                setLoading(true);
+                const response = await axios.get<LinkItem[]>(
+                    `${import.meta.env.VITE_BACKEND_URL}/vipcontent`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                setLinks(response.data);
+                setFilteredLinks(response.data);
+
+                const extractedCategories = Array.from(
+                    new Set(response.data.map((item) => item.category))
+                ).map((category) => ({
+                    id: category,
+                    name: category,
+                    category: category,
+                }));
+                setCategories(extractedCategories);
+            } catch (error) {
+                console.error("Error fetching VIP content:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchLinks();
+    }, [token]);
+
+    
+
+    const popularLinks = useMemo(() => {
+        return [...links]
+            .sort((a, b) => (b.views || 0) - (a.views || 0))
+            .slice(0, 5);
+    }, [links]);
+
+    const handleViewClick = async (linkId: number) => {
+        try {
+            await axios.post(
+                `${import.meta.env.VITE_BACKEND_URL}/vipcontent/${linkId}/views`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            setLinks(prevLinks =>
+                prevLinks.map(link =>
+                    link.id === linkId ? { ...link, views: (link.views || 0) + 1 } : link
+                )
+            );
+            setFilteredLinks(prevFilteredLinks =>
+                prevFilteredLinks.map(link =>
+                    link.id === linkId ? { ...link, views: (link.views || 0) + 1 } : link
+                )
+            );
+        } catch (error) {
+            console.error("Error counting view:", error);
+        }
+    };
+
+    useEffect(() => {
+        let result = [...links];
+
+        if (searchName) {
+            result = result.filter(link =>
+                link.name.toLowerCase().includes(searchName.toLowerCase()) ||
+                (link.description?.toLowerCase().includes(searchName.toLowerCase()))
+            );
+        }
+
+        if (selectedCategory) {
+            result = result.filter(link => link.category === selectedCategory);
+        }
+
+        if (selectedMonth) {
+            result = result.filter(link => {
+                const linkMonth = new Date(link.createdAt).getMonth() + 1;
+                return linkMonth.toString().padStart(2, '0') === selectedMonth;
+            });
+        }
+
+        switch (sortOption) {
+            case "mostRecent":
+                result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+                break;
+            case "mostViewed":
+                result.sort((a, b) => (b.views || 0) - (a.views || 0));
+                break;
+            case "alphabetical":
+                result.sort((a, b) => a.name.localeCompare(b.name));
+                break;
+        }
+
+        setFilteredLinks(result);
+        setCurrentPage(1);
+    }, [links, searchName, selectedCategory, selectedMonth, sortOption]);
+
+    const paginatedLinks = useMemo(() => {
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = startIndex + ITEMS_PER_PAGE;
+        return filteredLinks.slice(startIndex, endIndex);
+    }, [currentPage, filteredLinks]);
+
+    const totalPages = Math.ceil(filteredLinks.length / ITEMS_PER_PAGE);
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
+    const handlePrevPage = () => {
+        setCurrentPage((prev) => Math.max(prev - 1, 1));
+        scrollToTop();
+    };
+
+    const handleNextPage = () => {
+        setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+        scrollToTop();
+    };
+
+    const handleCardClick = (slug: string) => {
+        navigate(`/content/vip/${slug}`);
+    };
+
+    return (
+        <div className={`min-h-screen flex flex-col md:flex-row ${
+            theme === 'dark' ? 'bg-gray-900' : 'bg-white'
+        }`}>
+            {/* Mobile Filter Toggle */}
+            <button
+                onClick={() => setShowFilters(!showFilters)}
+                className="md:hidden fixed bottom-4 right-4 z-50 bg-purple-600 text-white p-4 rounded-full shadow-lg hover:bg-purple-700 transition-all duration-300 animate-bounce-slow"
+            >
+                <Filter className="w-6 h-6" />
+            </button>
+
+            {/* Left Sidebar (Filters) */}
+            <Filters
+                searchName={searchName}
+                setSearchName={setSearchName}
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+                selectedMonth={selectedMonth}
+                setSelectedMonth={setSelectedMonth}
+                sortOption={sortOption}
+                setSortOption={setSortOption}
+                categories={categories}
+                showFilters={showFilters}
+                setShowFilters={setShowFilters}
+                theme={theme}
+            />
+
+            {/* Main Content Area */}
+            <main className={`flex-1 py-8 px-4 sm:px-6 lg:px-8 order-2 ${
+                theme === 'dark'
+                    ? 'bg-gradient-to-b from-gray-800 to-gray-900'
+                    : 'bg-gradient-to-b from-purple-50/50 to-white'
+            }`}>
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-8">
+                        <div className={`inline-flex items-center justify-center p-3 rounded-full mb-3 ${
+                            theme === 'dark' ? 'bg-purple-900/30' : 'bg-purple-100'
+                        }`}>
+                            <Crown className="w-6 h-6 text-purple-500 mr-2" />
+                            <h1 className={`text-3xl font-bold ${
+                                theme === 'dark' ? 'text-white' : 'text-purple-800'
+                            }`}>Premium Content</h1>
+                        </div>
+                        <p className={theme === 'dark' ? 'text-gray-300' : 'text-purple-700'}>
+                            Welcome to Premium Page
+                        </p>
+                    </div>
+
+                    {loading ? (
+                        <div className="flex items-center justify-center py-16">
+                            <Loading />
+                        </div>
+                    ) : (
+                        <>
+                            <Masonry
+                                breakpointCols={BREAKPOINTS}
+                                className="my-masonry-grid"
+                                columnClassName="my-masonry-grid_column"
+                            >
+                                {paginatedLinks.map((link) => (
+                                    <ContentCard
+                                        key={link.id}
+                                        link={link}
+                                        theme={theme}
+                                        onCardClick={handleCardClick}
+                                        onViewClick={handleViewClick}
+                                    />
+                                ))}
+                            </Masonry>
+
+                            <Pagination
+                                currentPage={currentPage}
+                                totalPages={totalPages}
+                                onPrevPage={handlePrevPage}
+                                onNextPage={handleNextPage}
+                                theme={theme}
+                            />
+                        </>
+                    )}
+                </div>
+            </main>
+
+            {/* Right Sidebar (Trending Now) */}
+            <SidebarWrapper
+                title="Trending Now"
+                icon={<TrendingUp className="w-6 h-6" />}
+                theme={theme}
+                className="order-3"
+            >
+                {popularLinks.length > 0 ? (
+                    <div className="space-y-4">
+                        {popularLinks.map((link) => (
+                            <TrendingCard
+                                key={link.id}
+                                link={link}
+                                theme={theme}
+                                onCardClick={handleCardClick}
+                                onViewClick={handleViewClick}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <div className={`text-center py-8 rounded-xl border ${
+                        theme === 'dark'
+                            ? 'bg-gray-700 border-gray-600'
+                            : 'bg-white border-purple-100'
+                    }`}>
+                        <TrendingUp className="w-8 h-8 text-purple-400 mx-auto mb-2" />
+                        <p className={theme === 'dark' ? 'text-gray-300' : 'text-purple-600'}>
+                            No trending content yet
+                        </p>
+                    </div>
+                )}
+            </SidebarWrapper>
+        </div>
+    );
+};
+
+export default VipContent;
