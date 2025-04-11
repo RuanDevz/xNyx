@@ -57,7 +57,7 @@ const Header: React.FC = () => {
               Discord
             </a>
             <Link
-              to="/plans"
+              to="/pricing"
               className={`text-sm font-medium transition-colors ${
                 theme === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'
               }`}

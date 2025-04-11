@@ -25,7 +25,7 @@ const Footer = () => {
         { label: "About Us", href: "/about" },
         { label: "Privacy Policy", href: "/privacy" },
         { label: "Terms of Service", href: "/terms" },
-        { label: "DMCA", href: "/dmca" }
+        { label: "DMCA", href: "mailto:dmca@xnyxleaks.com" }
       ]
     },
     {

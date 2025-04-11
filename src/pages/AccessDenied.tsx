@@ -1,118 +1,213 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ShieldOff, Lock, Crown, ArrowLeft, AlertTriangle } from "lucide-react";
+import { 
+  ShieldOff,
+  Crown,
+  Lock,
+  ArrowRight,
+  AlertTriangle,
+  Sparkles,
+  ArrowLeftCircle
+} from "lucide-react";
 
 interface AccessDeniedProps {
   message: string;
 }
 
 const AccessDenied: React.FC<AccessDeniedProps> = ({ message }) => {
-  const vipBenefits = [
+  const premiumFeatures = [
     {
       icon: Crown,
-      title: "Premium Content",
-      description: "Access exclusive VIP content"
+      title: "Exclusive Content",
+      description: "Access premium-only features and content"
     },
     {
       icon: Lock,
       title: "Full Access",
-      description: "Unlock all features and content"
+      description: "Unlock all platform features instantly"
     },
     {
-      icon: AlertTriangle,
-      title: "Priority Support",
-      description: "Get help when you need it"
+      icon: Sparkles,
+      title: "Premium Support",
+      description: "Get priority assistance when needed"
     }
   ];
 
+  const theme = "dark";
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
-      <div className="max-w-4xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
+    <div className={`min-h-screen ${
+      theme === "dark" ? "bg-gray-900" : "bg-gray-50"
+    }`}>
+      <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
+        {/* Error Message */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center"
+          className="text-center mb-16"
         >
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="w-20 h-20 bg-green-500/20 border border-green-500/30 rounded-full flex items-center justify-center mx-auto mb-8"
+            transition={{ type: "spring", stiffness: 200 }}
+            className={`w-24 h-24 mx-auto mb-8 rounded-3xl ${
+              theme === "dark"
+                ? "bg-indigo-500/10 border-indigo-500/20"
+                : "bg-indigo-100 border-indigo-200"
+            } border-2 flex items-center justify-center relative overflow-hidden`}
           >
-            <ShieldOff className="w-12 h-12 text-green-400" />
+            <ShieldOff className={`w-12 h-12 ${
+              theme === "dark" ? "text-indigo-400" : "text-indigo-600"
+            }`} />
+            <motion.div
+              animate={{
+                rotate: 360,
+                scale: [1, 1.2, 1],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+            />
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+          <motion.h1
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
+            className={`text-4xl md:text-5xl font-bold mb-6 ${
+              theme === "dark" ? "text-white" : "text-gray-900"
+            }`}
           >
-            <h1 className="text-4xl font-bold mb-4">Access Denied</h1>
-            <p className="text-xl text-gray-300 mb-8">
-              {message || "This content is exclusively available to VIP members."}
-            </p>
-          </motion.div>
-
-          <motion.div
+            Access Denied
+          </motion.h1>
+          
+          <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12"
+            className={`text-xl max-w-2xl mx-auto ${
+              theme === "dark" ? "text-gray-300" : "text-gray-600"
+            }`}
           >
-            {vipBenefits.map((benefit, index) => (
-              <motion.div
-                key={benefit.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 + index * 0.1 }}
-                className="bg-gray-800/50 backdrop-blur-sm border border-green-500/20 rounded-xl p-6 hover:border-green-400/30 transition-colors duration-300"
-              >
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mb-4">
-                    <benefit.icon className="w-6 h-6 text-green-400" />
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">{benefit.title}</h3>
-                  <p className="text-gray-400">{benefit.description}</p>
+            {message || "This content is exclusively available to premium members. Upgrade your account to access all features."}
+          </motion.p>
+        </motion.div>
+
+        {/* Premium Features */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
+        >
+          {premiumFeatures.map((feature, index) => (
+            <motion.div
+              key={feature.title}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.6 + (index * 0.1) }}
+              className={`relative overflow-hidden rounded-2xl ${
+                theme === "dark"
+                  ? "bg-gray-800/50 border border-gray-700"
+                  : "bg-white border border-gray-200"
+              } p-6`}
+            >
+              <div className="relative z-10">
+                <div className={`w-12 h-12 ${
+                  theme === "dark"
+                    ? "bg-indigo-500/10 text-indigo-400"
+                    : "bg-indigo-100 text-indigo-600"
+                } rounded-xl flex items-center justify-center mb-4`}>
+                  <feature.icon className="w-6 h-6" />
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
+                <h3 className={`text-xl font-semibold mb-2 ${
+                  theme === "dark" ? "text-white" : "text-gray-900"
+                }`}>{feature.title}</h3>
+                <p className={`${
+                  theme === "dark" ? "text-gray-400" : "text-gray-600"
+                }`}>{feature.description}</p>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-20" />
+            </motion.div>
+          ))}
+        </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7 }}
-            className="bg-gradient-to-r from-green-500/10 via-green-400/10 to-green-500/10 border border-green-500/30 p-8 rounded-2xl mb-8"
-          >
-            <Crown className="w-8 h-8 text-green-400 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold mb-2">Upgrade to VIP Today</h2>
-            <p className="text-gray-300">
-              Join our VIP membership to unlock exclusive content and premium features.
-            </p>
-          </motion.div>
+        {/* Premium Section */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className={`rounded-3xl overflow-hidden ${
+            theme === "dark"
+              ? "bg-gradient-to-r from-indigo-900/50 to-purple-900/50 border border-indigo-500/20"
+              : "bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100"
+          } p-8 md:p-12 relative`}
+        >
+          <div className="relative z-10">
+            <div className="text-center mb-10">
+              <Crown className={`w-12 h-12 mx-auto mb-4 ${
+                theme === "dark" ? "text-indigo-400" : "text-indigo-600"
+              }`} />
+              <h2 className={`text-2xl font-bold mb-4 ${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              }`}>Unlock Premium Features</h2>
+              <p className={`text-lg max-w-2xl mx-auto ${
+                theme === "dark" ? "text-gray-300" : "text-gray-600"
+              }`}>
+                Join our premium membership to unlock exclusive content and enjoy an enhanced experience
+                with access to all premium features.
+              </p>
+            </div>
+          </div>
 
+          {/* Background Animation */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+            animate={{
+              rotate: [0, 360],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+            className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-r from-indigo-500/10 to-transparent rounded-full blur-3xl"
+          />
+        </motion.div>
+
+        {/* Action Buttons */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center mt-12"
+        >
+          <Link
+            to="/pricing"
+            className={`inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold transition-all duration-300 ${
+              theme === "dark"
+                ? "bg-indigo-500 hover:bg-indigo-600 text-white"
+                : "bg-indigo-600 hover:bg-indigo-700 text-white"
+            }`}
           >
-            <Link
-              to="/plans"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-400 hover:to-emerald-500 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-green-500/20"
-            >
-              <Crown className="w-5 h-5" />
-              Become VIP
-            </Link>
-            <Link
-              to="/"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-800 text-white rounded-xl font-semibold hover:bg-gray-700 transition-colors duration-200 border border-gray-700 hover:border-green-500/50"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              Back to Homepage
-            </Link>
-          </motion.div>
+            Upgrade to Premium
+            <ArrowRight className="w-5 h-5 ml-2" />
+          </Link>
+          <Link
+            to="/"
+            className={`inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold transition-all duration-300 ${
+              theme === "dark"
+                ? "bg-gray-800 hover:bg-gray-700 text-white"
+                : "bg-white hover:bg-gray-50 text-gray-900 border border-gray-200"
+            }`}
+          >
+            Return to Homepage
+            <ArrowLeftCircle className="w-5 h-5 ml-2" />
+          </Link>
         </motion.div>
       </div>
     </div>

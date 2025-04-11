@@ -106,7 +106,7 @@ const App = () => {
                 hasPermission.vip ? (
                   <VIPcontent />
                 ) : (
-                  <AccessDenied message="You are not a VIP to access this page." />
+                  <AccessDenied message="You are not a Premium to access this page." />
                 )
               }
             />

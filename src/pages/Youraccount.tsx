@@ -249,7 +249,7 @@ function Youraccount() {
               <div className="flex items-center gap-3 mb-6">
                 <Crown className={`w-6 h-6 ${classes.iconText}`} />
                 <h2 className={`text-xl font-bold ${classes.text}`}>
-                  Your VIP Benefits
+                  Your Premium Benefits
                 </h2>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

@@ -59,13 +59,7 @@ function Login() {
   return (
     <div className={`min-h-screen relative ${theme === 'dark' ? 'bg-gray-900 text-gray-200' : 'bg-gray-50 text-gray-900'} flex items-center justify-center transition-colors duration-300`}>
       {/* Theme Toggle */}
-      <button
-        onClick={toggleTheme}
-        className={`absolute top-4 right-4 p-2 rounded-full ${
-          theme === 'dark' ? 'bg-gray-800 text-yellow-400' : 'bg-white text-gray-900 shadow-md'
-        } hover:scale-110 transition-all duration-300`}
-      >
-      </button>
+
 
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

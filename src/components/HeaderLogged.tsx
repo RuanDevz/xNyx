@@ -327,13 +327,13 @@ const HeaderLogged: React.FC = () => {
                   >
                     <span className="relative z-10 flex items-center justify-center space-x-2">
                       <Sparkles className="w-5 h-5" />
-                      <span>Access VIP Content</span>
+                      <span>Access Premium Content</span>
                     </span>
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-500 ease-in-out" />
                   </Link>
                 ) : (
                   <Link
-                    to="/plans"
+                    to="/pricing"
                     className={`flex items-center justify-center space-x-2 px-4 py-3 rounded-lg w-full ${
                       theme === 'dark'
                         ? 'bg-gray-700 text-white hover:bg-gray-600'
@@ -342,7 +342,7 @@ const HeaderLogged: React.FC = () => {
                     onClick={handleMobileMenuToggle}
                   >
                     <Crown className="w-5 h-5" />
-                    <span className="font-medium">Become VIP</span>
+                    <span className="font-medium">Become Premium</span>
                   </Link>
                 )}
               </motion.div>

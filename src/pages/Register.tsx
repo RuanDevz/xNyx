@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { LogIn, Lock, Mail, Loader2, AlertCircle, User } from "lucide-react";
+import { LogIn, Lock, Mail, Loader2, AlertCircle, User, Sun, Moon } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
 
 const Register = () => {
@@ -12,7 +12,9 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const { theme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
+
+  const isDark = theme === 'dark';
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,11 +63,13 @@ const Register = () => {
   };
 
   return (
-    <div className={`min-h-screen relative bg-gray-900 text-gray-200 flex items-center justify-center`}>
+    <div className={`min-h-screen relative ${isDark ? 'bg-gray-900 text-gray-200' : 'bg-gray-50 text-gray-900'} flex items-center justify-center transition-colors duration-200`}>
+     
+
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[120px] -top-48 -right-24 animate-pulse" />
-        <div className="absolute w-[400px] h-[400px] bg-emerald-500/10 rounded-full blur-[100px] -bottom-32 -left-24 animate-pulse delay-300" />
+        <div className={`absolute w-[500px] h-[500px] ${isDark ? 'bg-emerald-500/10' : 'bg-emerald-500/5'} rounded-full blur-[120px] -top-48 -right-24 animate-pulse`} />
+        <div className={`absolute w-[400px] h-[400px] ${isDark ? 'bg-emerald-500/10' : 'bg-emerald-500/5'} rounded-full blur-[100px] -bottom-32 -left-24 animate-pulse delay-300`} />
       </div>
 
       {/* Main Content */}
@@ -76,7 +80,9 @@ const Register = () => {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="inline-flex items-center justify-center p-4 bg-emerald-500/10 rounded-2xl backdrop-blur-sm border border-emerald-500/20 mb-6"
+            className={`inline-flex items-center justify-center p-4 ${
+              isDark ? 'bg-emerald-500/10 border-emerald-500/20' : 'bg-emerald-500/5 border-emerald-500/10'
+            } rounded-2xl backdrop-blur-sm border mb-6`}
           >
             <span className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-teal-500 bg-clip-text text-transparent">
               xNyxLeaks
@@ -85,7 +91,11 @@ const Register = () => {
         </div>
 
         {/* Register Form */}
-        <div className="bg-gray-800/50 backdrop-blur-xl border border-gray-700/30 rounded-3xl p-8">
+        <div className={`${
+          isDark 
+            ? 'bg-gray-800/50 border-gray-700/30' 
+            : 'bg-white/80 border-gray-200'
+        } backdrop-blur-xl border rounded-3xl p-8 shadow-xl`}>
           <h2 className="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-emerald-400 to-teal-500 bg-clip-text text-transparent">
             Create Account
           </h2>
@@ -103,7 +113,7 @@ const Register = () => {
 
           <form onSubmit={handleRegister} className="space-y-6">
             <div className="space-y-2">
-              <label htmlFor="name" className="block text-sm font-medium text-gray-300">
+              <label htmlFor="name" className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                 Username
               </label>
               <div className="relative">
@@ -113,7 +123,11 @@ const Register = () => {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="block w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700/50 border-emerald-500/20 text-gray-100 placeholder-gray-400 focus:border-emerald-500 focus:ring-emerald-500/20 transition-all"
+                  className={`block w-full pl-10 pr-4 py-3 rounded-xl ${
+                    isDark 
+                      ? 'bg-gray-700/50 text-gray-100 placeholder-gray-400' 
+                      : 'bg-gray-50 text-gray-900 placeholder-gray-500'
+                  } border-emerald-500/20 focus:border-emerald-500 focus:ring-emerald-500/20 transition-all`}
                   placeholder="Enter your username"
                   required
                 />
@@ -121,7 +135,7 @@ const Register = () => {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300">
+              <label htmlFor="email" className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                 Email
               </label>
               <div className="relative">
@@ -131,7 +145,11 @@ const Register = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700/50 border-emerald-500/20 text-gray-100 placeholder-gray-400 focus:border-emerald-500 focus:ring-emerald-500/20 transition-all"
+                  className={`block w-full pl-10 pr-4 py-3 rounded-xl ${
+                    isDark 
+                      ? 'bg-gray-700/50 text-gray-100 placeholder-gray-400' 
+                      : 'bg-gray-50 text-gray-900 placeholder-gray-500'
+                  } border-emerald-500/20 focus:border-emerald-500 focus:ring-emerald-500/20 transition-all`}
                   placeholder="Enter your email"
                   required
                 />
@@ -139,7 +157,7 @@ const Register = () => {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300">
+              <label htmlFor="password" className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                 Password
               </label>
               <div className="relative">
@@ -149,7 +167,11 @@ const Register = () => {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700/50 border-emerald-500/20 text-gray-100 placeholder-gray-400 focus:border-emerald-500 focus:ring-emerald-500/20 transition-all"
+                  className={`block w-full pl-10 pr-4 py-3 rounded-xl ${
+                    isDark 
+                      ? 'bg-gray-700/50 text-gray-100 placeholder-gray-400' 
+                      : 'bg-gray-50 text-gray-900 placeholder-gray-500'
+                  } border-emerald-500/20 focus:border-emerald-500 focus:ring-emerald-500/20 transition-all`}
                   placeholder="Enter your password"
                   required
                 />
@@ -157,7 +179,7 @@ const Register = () => {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300">
+              <label htmlFor="confirmPassword" className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
                 Confirm Password
               </label>
               <div className="relative">
@@ -167,7 +189,11 @@ const Register = () => {
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="block w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700/50 border-emerald-500/20 text-gray-100 placeholder-gray-400 focus:border-emerald-500 focus:ring-emerald-500/20 transition-all"
+                  className={`block w-full pl-10 pr-4 py-3 rounded-xl ${
+                    isDark 
+                      ? 'bg-gray-700/50 text-gray-100 placeholder-gray-400' 
+                      : 'bg-gray-50 text-gray-900 placeholder-gray-500'
+                  } border-emerald-500/20 focus:border-emerald-500 focus:ring-emerald-500/20 transition-all`}
                   placeholder="Confirm your password"
                   required
                 />
@@ -196,11 +222,11 @@ const Register = () => {
           </form>
 
           <div className="mt-8 text-center">
-            <p className="text-gray-400">
+            <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
               Already have an account?{" "}
               <Link
                 to="/login"
-                className="font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
+                className="font-medium text-emerald-500 hover:text-emerald-400 transition-colors"
               >
                 Sign in
               </Link>

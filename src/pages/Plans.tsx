@@ -94,7 +94,7 @@ const Plans: React.FC = () => {
     if (isAuthenticated) {
       navigate("/");
     } else {
-      navigate("/login");
+      navigate("/");
     }
     return Promise.resolve();
   };
@@ -225,14 +225,14 @@ const Plans: React.FC = () => {
               price="$7.00"
               description="Most flexible option"
               features={[
-                "Full content library",
+                "Full content",
                 "Priority support 24/7",
-                "Ad-free experience",
+                "Early access to content",
                 "Exclusive webinars",
                 "Premium features",
-                "Private community",
-                "Advanced analytics",
-                "Early access"
+                "Access to Discord Premium announcements",
+                "Access to Telegram Premium announcements",
+                "Content recommendations"
               ]}
               buttonText="Get Premium"
               onButtonClick={() => handleAccessClick("monthly")}
@@ -253,13 +253,13 @@ const Plans: React.FC = () => {
               description="Best value - Save 55%"
               features={[
                 "All Premium features",
-                "Annual member badge",
+                "Ad-free experience",
                 "Exclusive events",
-                "1-on-1 sessions",
-                "Custom features",
-                "VIP community",
-                "Priority updates",
-                "Special perks"
+                "Premium features",
+                "Access to Discord Premium announcements",
+                "Access to Telegram Premium announcements",
+                "Content recommendations",
+                "Early access to content"
               ]}
               buttonText="Go Annual"
               onButtonClick={() => handleAccessClick("annual")}

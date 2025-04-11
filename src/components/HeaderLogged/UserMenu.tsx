@@ -82,7 +82,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                   <p className="font-medium text-lg text-white mb-1">{name}</p>
                   <div className="flex items-center gap-2">
                     {isVip ? (
-                      <span className={`px-2 py-1 rounded-md text-sm font-medium ${isDark ? 'bg-yellow-400/10 border border-yellow-400/20 text-yellow-400' : 'bg-yellow-400/20 border border-yellow-400/30 text-yellow-500'}`}>VIP</span>
+                      <span className={`px-2 py-1 rounded-md text-sm font-medium ${isDark ? 'bg-yellow-400/10 border border-yellow-400/20 text-yellow-400' : 'bg-yellow-400/20 border border-yellow-400/30 text-yellow-500'}`}>Premium</span>
                     ) : (
                       <span className={`px-2 py-1 rounded-md text-sm font-medium ${isDark ? 'bg-gray-800 text-gray-400' : 'bg-gray-300 text-gray-600'}`}>Regular</span>
                     )}
@@ -120,7 +120,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                       <Crown className={`w-5 h-5 ${isDark ? 'text-yellow-400 group-hover:text-yellow-300' : 'text-yellow-500 group-hover:text-yellow-400'} group-hover:animate-pulse`} />
                       <div className="absolute inset-0 bg-yellow-400/20 blur-sm rounded-full group-hover:animate-pulse" />
                     </div>
-                    <span className={`text-sm font-medium ${isDark ? 'text-gray-200 group-hover:text-white' : 'text-gray-700 group-hover:text-gray-900'}`}>VIP Area</span>
+                    <span className={`text-sm font-medium ${isDark ? 'text-gray-200 group-hover:text-white' : 'text-gray-700 group-hover:text-gray-900'}`}>Premium Access</span>
                   </Link>
                 </>
               )}

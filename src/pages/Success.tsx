@@ -59,7 +59,7 @@ export default function Success() {
     {
       icon: MessageCircle,
       title: "Join Discord",
-      description: "Connect with our community and request VIP role",
+      description: "Connect with our community and request Premium role",
       link: "https://discord.gg/SAPZmTTeuN",
       buttonText: "Open Discord",
       color: "bg-[#5865F2]"
@@ -149,7 +149,7 @@ export default function Success() {
               theme === "dark" ? "text-gray-300" : "text-gray-600"
             }`}
           >
-            Thank you for joining our VIP community! To complete your access setup, please follow the steps below.
+            Thank you for joining our Premium community! To complete your access setup, please follow the steps below.
           </motion.p>
         </motion.div>
 
@@ -215,7 +215,7 @@ export default function Success() {
               }`} />
               <h2 className={`text-2xl font-bold mb-4 ${
                 theme === "dark" ? "text-white" : "text-gray-900"
-              }`}>Your VIP Benefits</h2>
+              }`}>Your Premium Benefits</h2>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
