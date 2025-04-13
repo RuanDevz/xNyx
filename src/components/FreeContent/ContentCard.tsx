@@ -17,6 +17,12 @@ export const ContentCard: React.FC<ContentCardProps> = ({
         onViewClick(link.id);
     };
 
+        useEffect(() => {
+              linkvertise("1329936", {
+                blacklist: ["discord.gg", "discord.com", "t.me", "telegram.me", "telegram.dog"]
+              });
+          }, []);
+
     return (
         <div
             onClick={() => onCardClick(link.slug)}
@@ -46,7 +52,7 @@ export const ContentCard: React.FC<ContentCardProps> = ({
                         </h4>
                         {isToday(new Date(link.createdAt)) && (
                             <span className="bg-emerald-500 text-white text-[10px] font-medium px-1.5 py-0.5 rounded-full whitespace-nowrap">
-                                New
+                                Today
                             </span>
                         )}
                     </div>

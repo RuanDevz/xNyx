@@ -18,7 +18,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/auth/login`,
+        `https://x-nyx-backend.vercel.app/auth/login`,
         {
           email,
           password,
@@ -196,7 +196,7 @@ function Login() {
             <p className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
               Don't have an account?{" "}
               <button
-                onClick={() => window.location.href = '/register'}
+                onClick={() => window.location.href = '#/register'}
                 className="font-medium text-emerald-500 hover:text-emerald-400 transition-colors"
               >
                 Sign up

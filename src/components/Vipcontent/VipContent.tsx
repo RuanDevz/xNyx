@@ -33,7 +33,7 @@ const VipContent = () => {
             try {
                 setLoading(true);
                 const response = await axios.get<LinkItem[]>(
-                    `${import.meta.env.VITE_BACKEND_URL}/vipcontent`,
+                    `https://x-nyx-backend.vercel.app/vipcontent`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -71,7 +71,7 @@ const VipContent = () => {
     const handleViewClick = async (linkId: number) => {
         try {
             await axios.post(
-                `${import.meta.env.VITE_BACKEND_URL}/vipcontent/${linkId}/views`,
+                `https://x-nyx-backend.vercel.app/vipcontent/${linkId}/views`,
                 {},
                 {
                     headers: {

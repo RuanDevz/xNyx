@@ -35,7 +35,7 @@ const FreeContent = () => {
             try {
                 setLoading(true);
                 const response = await axios.get<LinkItem[]>(
-                    `${import.meta.env.VITE_BACKEND_URL}/freecontent`
+                    `https://x-nyx-backend.vercel.app/freecontent`
                 );
                 setLinks(response.data);
                 setFilteredLinks(response.data);
@@ -70,7 +70,7 @@ const FreeContent = () => {
 
     const handleViewClick = async (linkId: number) => {
         try {
-            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/freecontent/${linkId}/views`);
+            await axios.post(`https://x-nyx-backend.vercel.app/freecontent/${linkId}/views`);
             setLinks(prevLinks =>
                 prevLinks.map(link =>
                     link.id === linkId ? { ...link, views: (link.views || 0) + 1 } : link

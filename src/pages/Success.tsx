@@ -28,7 +28,7 @@ export default function Success() {
       }
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/update-vip-status`, {
+        const response = await fetch(`https://x-nyx-backend.vercel.app/update-vip-status`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

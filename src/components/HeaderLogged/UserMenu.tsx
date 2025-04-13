@@ -35,6 +35,10 @@ const UserMenu: React.FC<UserMenuProps> = ({
   const { theme } = useTheme();
   const isDark = theme === 'dark';
 
+  const handleItemClick = () => {
+    handleMenuToggle();
+  };
+
   return (
     <nav className="relative z-50">
       <div
@@ -98,6 +102,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
               <Link
                 to="/account"
                 className={`px-4 py-3 ${isDark ? 'hover:bg-gray-800/50' : 'hover:bg-gray-200/50'} flex items-center gap-3 transition-all duration-200 group`}
+                onClick={handleItemClick}
               >
                 <User2Icon className={`w-5 h-5 ${isDark ? 'text-blue-400 group-hover:text-blue-300' : 'text-blue-500 group-hover:text-blue-400'}`} />
                 <span className={`text-sm font-medium ${isDark ? 'text-gray-200 group-hover:text-white' : 'text-gray-700 group-hover:text-gray-900'}`}>Your Account</span>
@@ -108,6 +113,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                   <Link
                     to="/recommend"
                     className={`px-4 py-3 ${isDark ? 'hover:bg-gray-800/50' : 'hover:bg-gray-200/50'} flex items-center gap-3 transition-all duration-200 group`}
+                    onClick={handleItemClick}
                   >
                     <BadgePlus className={`w-5 h-5 ${isDark ? 'text-yellow-400 group-hover:text-yellow-300' : 'text-yellow-500 group-hover:text-yellow-400'}`} />
                     <span className={`text-sm font-medium ${isDark ? 'text-gray-200 group-hover:text-white' : 'text-gray-700 group-hover:text-gray-900'}`}>Recommend Content</span>
@@ -115,6 +121,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                   <Link
                     to="/VIP"
                     className={`px-4 py-3 ${isDark ? 'hover:bg-gray-800/50' : 'hover:bg-gray-200/50'} flex items-center gap-3 transition-all duration-200 group`}
+                    onClick={handleItemClick}
                   >
                     <div className="relative">
                       <Crown className={`w-5 h-5 ${isDark ? 'text-yellow-400 group-hover:text-yellow-300' : 'text-yellow-500 group-hover:text-yellow-400'} group-hover:animate-pulse`} />
@@ -136,6 +143,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                   <Link
                     to="/admin/requests"
                     className={`px-4 py-3 ${isDark ? 'hover:bg-gray-800/50' : 'hover:bg-gray-200/50'} flex items-center gap-3 transition-all duration-200 group`}
+                    onClick={handleItemClick}
                   >
                     <UserSearch className={`w-5 h-5 ${isDark ? 'text-blue-400 group-hover:text-blue-300' : 'text-blue-500 group-hover:text-blue-400'}`} />
                     <span className={`text-sm font-medium ${isDark ? 'text-gray-200 group-hover:text-white' : 'text-gray-700 group-hover:text-gray-900'}`}>View Requests</span>
@@ -143,6 +151,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                   <Link
                     to="/admin/stats"
                     className={`px-4 py-3 ${isDark ? 'hover:bg-gray-800/50' : 'hover:bg-gray-200/50'} flex items-center gap-3 transition-all duration-200 group`}
+                    onClick={handleItemClick}
                   >
                     <Waypoints className={`w-5 h-5 ${isDark ? 'text-green-400 group-hover:text-green-300' : 'text-green-500 group-hover:text-green-400'}`} />
                     <span className={`text-sm font-medium ${isDark ? 'text-gray-200 group-hover:text-white' : 'text-gray-700 group-hover:text-gray-900'}`}>View Stats</span>
@@ -150,6 +159,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                   <Link
                     to="/admin/settings"
                     className={`px-4 py-3 ${isDark ? 'hover:bg-gray-800/50' : 'hover:bg-gray-200/50'} flex items-center gap-3 transition-all duration-200 group`}
+                    onClick={handleItemClick}
                   >
                     <Settings className={`w-5 h-5 ${isDark ? 'text-indigo-400 group-hover:text-indigo-300' : 'text-indigo-500 group-hover:text-indigo-400'}`} />
                     <span className={`text-sm font-medium ${isDark ? 'text-gray-200 group-hover:text-white' : 'text-gray-700 group-hover:text-gray-900'}`}>Admin Settings</span>
@@ -163,13 +173,14 @@ const UserMenu: React.FC<UserMenuProps> = ({
                   className={`px-4 py-3 ${isDark ? 'hover:bg-gray-800/50' : 'hover:bg-gray-200/50'} flex items-center gap-3 transition-all duration-200 group`}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={handleItemClick}
                 >
                   <HelpCircle className={`w-5 h-5 ${isDark ? 'text-gray-400 group-hover:text-gray-300' : 'text-gray-500 group-hover:text-gray-400'}`} />
                   <span className={`text-sm font-medium ${isDark ? 'text-gray-200 group-hover:text-white' : 'text-gray-700 group-hover:text-gray-900'}`}>Support</span>
                 </Link>
 
                 <button
-                  onClick={Logout}
+                  onClick={() => { Logout(); handleItemClick(); }}
                   className={`w-full px-4 py-3 ${isDark ? 'hover:bg-gray-800/50' : 'hover:bg-gray-200/50'} flex items-center gap-3 transition-all duration-200 group`}
                 >
                   <LogOut className={`w-5 h-5 ${isDark ? 'text-red-400 group-hover:text-red-300' : 'text-red-500 group-hover:text-red-400'}`} />

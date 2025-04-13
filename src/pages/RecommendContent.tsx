@@ -27,7 +27,7 @@ const RecommendContent: React.FC = () => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/recommendations`,
+        `https://x-nyx-backend.vercel.app/recommendations`,
         {
           title,
           description,

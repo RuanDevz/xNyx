@@ -43,7 +43,7 @@ const ContentDetails = () => {
         // Try fetching from free content first
         try {
           const freeResponse = await axios.get(
-            `${import.meta.env.VITE_BACKEND_URL}/freecontent/slug/${slug}`
+            `https://x-nyx-backend.vercel.app/freecontent/slug/${slug}`
           );
           setContent({ ...freeResponse.data, isVip: false });
           return;
@@ -51,7 +51,7 @@ const ContentDetails = () => {
           // If not found in free content, try VIP content
           if (token) {
             const vipResponse = await axios.get(
-              `${import.meta.env.VITE_BACKEND_URL}/vipcontent/slug/${slug}`,
+              `https://x-nyx-backend.vercel.app/vipcontent/slug/${slug}`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -86,7 +86,7 @@ const ContentDetails = () => {
       } : {};
 
       await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/${endpoint}/${content.id}/views`,
+        `https://x-nyx-backend.vercel.app/${endpoint}/${content.id}/views`,
         {},
         config
       );

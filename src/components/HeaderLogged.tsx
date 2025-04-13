@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { 
-  Sparkles, 
-  Flame, 
-  MessageCircle, 
-  Send, 
-  Menu, 
-  X, 
+import {
+  Sparkles,
+  Flame,
+  MessageCircle,
+  Send,
+  Menu,
+  X,
   Crown,
   User,
   BarChart2,
@@ -17,7 +17,7 @@ import {
   LogOut,
   Shield,
   Gift,
-  ChevronRight
+  ChevronRight,
 } from 'lucide-react';
 import UserMenu from "./HeaderLogged/UserMenu";
 import ThemeToggle from "./ThemeToggle";
@@ -55,12 +55,12 @@ const HeaderLogged: React.FC = () => {
       if (token && email) {
         try {
           const vipResponse = await axios.get(
-            `${import.meta.env.VITE_BACKEND_URL}/auth/is-vip/${email}`
+            `https://x-nyx-backend.vercel.app/auth/is-vip/${email}`
           );
           setIsVip(vipResponse.data.isVip);
 
           const adminResponse = await axios.get(
-            `${import.meta.env.VITE_BACKEND_URL}/auth/is-admin/${email}`
+            `https://x-nyx-backend.vercel.app/auth/is-admin/${email}`
           );
           setIsAdmin(adminResponse.data.isAdmin);
         } catch (error) {
@@ -105,8 +105,8 @@ const HeaderLogged: React.FC = () => {
 
   return (
     <header className={`sticky top-0 z-50 shadow-lg border-b ${
-      theme === 'dark' 
-        ? 'bg-gray-900 border-emerald-800 text-white' 
+      theme === 'dark'
+        ? 'bg-gray-900 border-emerald-800 text-white'
         : 'bg-white border-emerald-100 text-gray-900'
     }`}>
       <div className="container mx-auto px-4">
@@ -114,7 +114,7 @@ const HeaderLogged: React.FC = () => {
           {/* Logo */}
           <Link to="/" className="group flex items-center space-x-3">
             <div className="relative">
-              
+
               <div className="absolute inset-0 bg-emerald-400/20 blur-xl rounded-full animate-pulse" />
             </div>
             <div className="relative">
@@ -139,21 +139,23 @@ const HeaderLogged: React.FC = () => {
                 href="https://t.me/+u0Qu9SkPd8EyMzcx"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`text-sm font-medium transition-colors ${
+                className={`flex items-center space-x-1 text-sm font-medium transition-colors ${
                   theme === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
-                Telegram
+                <Send className="w-4 h-4" />
+                <span>Telegram</span>
               </a>
               <a
                 href="https://discord.gg/SAPZmTTeuN"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`text-sm font-medium transition-colors ${
+                className={`flex items-center space-x-1 text-sm font-medium transition-colors ${
                   theme === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
-                Discord
+                <MessageCircle className="w-4 h-4" />
+                <span>Discord</span>
               </a>
               {isVip ? (
                 <Link

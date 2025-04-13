@@ -60,20 +60,6 @@ export const TrendingCard: React.FC<TrendingCardProps> = ({
                             {link.views || 0} views
                         </span>
                     </div>
-                    <a
-                        href={link.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            onViewClick(link.id);
-                        }}
-                        className="mt-2 inline-flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium py-1 px-2 rounded-md
-                            transition-all duration-200 w-full text-center"
-                    >
-                        View Resource
-                        <Zap className="ml-1 w-3 h-3" />
-                    </a>
                 </div>
             </div>
         </div>

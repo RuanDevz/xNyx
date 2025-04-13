@@ -101,7 +101,7 @@ const Footer = () => {
                             : "text-gray-600 hover:text-emerald-600"
                         } transition-colors duration-200`}
                       >
-                        {link.icon && <link.icon className="w-4 h-4 mr-2" />}
+                    
                         {link.label}
                         {link.href.startsWith('http') && (
                           <ExternalLink className="w-3 h-3 ml-1 opacity-50" />
