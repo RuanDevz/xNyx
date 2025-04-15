@@ -49,7 +49,7 @@ const App = () => {
 
 
       try {
-        const response = await axios.get(`https://x-nyx-backend.vercel.app/auth/dashboard`, {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/auth/dashboard`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

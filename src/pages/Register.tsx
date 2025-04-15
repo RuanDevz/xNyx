@@ -28,7 +28,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post(`https://x-nyx-backend.vercel.app/auth/register`, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/register`, {
         name,
         email,
         password,
@@ -38,7 +38,7 @@ const Register = () => {
       localStorage.setItem("email", email);
 
       const loginResponse = await axios.post(
-        `https://x-nyx-backend.vercel.app/auth/login`,
+        `${import.meta.env.VITE_BACKEND_URL}/auth/login`,
         {
           email,
           password,

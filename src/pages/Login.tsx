@@ -18,7 +18,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        `https://x-nyx-backend.vercel.app/auth/login`,
+        `${import.meta.env.VITE_BACKEND_URL}/auth/login`,
         {
           email,
           password,

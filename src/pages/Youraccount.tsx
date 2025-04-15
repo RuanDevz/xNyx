@@ -57,7 +57,7 @@ function Youraccount() {
 
       try {
         const response = await fetch(
-          `https://x-nyx-backend.vercel.app/auth/dashboard`,
+          `${import.meta.env.VITE_BACKEND_URL}/auth/dashboard`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
