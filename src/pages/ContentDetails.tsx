@@ -8,10 +8,14 @@ import { formatDistanceToNow } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 import { linkvertise } from '../utils/linkvertise';
 
+import LinkvertiseLogo from '../assets/Linkvertise.jpg';
+import Admavenlogo from '../assets/Admaven.png';
+
 type ContentItem = {
   id: number;
   name: string;
   link: string;
+  link2?: string;
   category: string;
   createdAt: string;
   description?: string;
@@ -31,7 +35,7 @@ const ContentDetails = () => {
 
   useEffect(() => {
     if (content?.isVip === false) {
-        linkvertise("1329936", { blacklist: ["discord.gg", "t.me"] });
+      linkvertise("1329936", { whitelist: ["mega.nz", "pixeldrain.com"] });
     }
   }, [content?.isVip]);
 
@@ -40,18 +44,16 @@ const ContentDetails = () => {
       try {
         setLoading(true);
         
-        // Try fetching from free content first
         try {
           const freeResponse = await axios.get(
-            `https://x-nyx-backend.vercel.app/freecontent/slug/${slug}`
+            `${import.meta.env.VITE_BACKEND_URL}/freecontent/slug/${slug}`
           );
           setContent({ ...freeResponse.data, isVip: false });
           return;
         } catch (freeError) {
-          // If not found in free content, try VIP content
           if (token) {
             const vipResponse = await axios.get(
-              `https://x-nyx-backend.vercel.app/vipcontent/slug/${slug}`,
+              `${import.meta.env.VITE_BACKEND_URL}/vipcontent/slug/${slug}`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,
@@ -86,7 +88,7 @@ const ContentDetails = () => {
       } : {};
 
       await axios.post(
-        `https://x-nyx-backend.vercel.app/${endpoint}/${content.id}/views`,
+        `${import.meta.env.VITE_BACKEND_URL}/${endpoint}/${content.id}/views`,
         {},
         config
       );
@@ -94,7 +96,6 @@ const ContentDetails = () => {
       console.error("Error counting view:", error);
     }
   };
-
 
   if (loading) {
     return (
@@ -131,7 +132,7 @@ const ContentDetails = () => {
     }`}>
       <div className="max-w-4xl mx-auto px-4 py-8">
         <button
-          onClick={() => navigate(content.isVip ? '/vip' : '/')}
+          onClick={() => navigate(content.isVip ? '/premium' : '/')}
           className={`mb-8 inline-flex items-center px-4 py-2 rounded-lg transition-colors ${
             theme === 'dark' 
               ? 'bg-gray-800 text-gray-200 hover:bg-gray-700' 
@@ -213,20 +214,77 @@ const ContentDetails = () => {
               />
             )}
 
-            <a
-              href={content.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={handleViewClick}
-              className={`inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 font-medium rounded-xl transition-colors ${
-                content.isVip
-                  ? 'bg-purple-600 hover:bg-purple-700 text-white'
-                  : 'bg-emerald-600 hover:bg-emerald-700 text-white'
-              }`}
-            >
-              Visit Resource
-              <ExternalLink className="w-5 h-5 ml-2" />
-            </a>
+            <div className="flex flex-col sm:flex-row gap-14  justify-center items-stretch">
+              <a
+                href={content.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={handleViewClick}
+                className={`group w-full sm:w-auto flex items-center gap-4 px-6 py-4 rounded-xl transition-all duration-300 hover:scale-102 hover:shadow-xl ${
+                  theme === 'dark'
+                    ? 'bg-gray-700 hover:bg-gray-600'
+                    : 'bg-white hover:bg-gray-50'
+                } border border-gray-200 shadow-md relative overflow-hidden`}
+              >
+                <div 
+                  className="w-14 h-14 rounded-lg shadow-inner transition-transform duration-300 group-hover:scale-110 relative z-10"
+                  style={{
+                    backgroundImage: `url(${LinkvertiseLogo})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }}
+                />
+                <div className="flex flex-col">
+                  <span className={`text-lg font-semibold ${
+                    theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>
+                    View with Linkvertise
+                  </span>
+                  <span className={`text-sm ${
+                    theme === 'dark' ? 'text-gray-300' : 'text-gray-500'
+                  }`}>
+                    Click to continue
+                  </span>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-transparent group-hover:from-transparent group-hover:to-emerald-500/10 transition-all duration-300" />
+              </a>
+
+              {content.link2 && (
+                <a
+                  href={content.link2}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={handleViewClick}
+                  className={`group w-full sm:w-auto flex items-center gap-4 px-6 py-4 rounded-xl transition-all duration-300 hover:scale-102 hover:shadow-xl ${
+                    theme === 'dark'
+                      ? 'bg-gray-700 hover:bg-gray-600'
+                      : 'bg-white hover:bg-gray-50'
+                  } border border-gray-200 shadow-md relative overflow-hidden`}
+                >
+                  <div 
+                    className="w-14 h-14 rounded-lg shadow-inner transition-transform duration-300 group-hover:scale-110 relative z-10"
+                    style={{
+                      backgroundImage: `url(${Admavenlogo})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }}
+                  />
+                  <div className="flex flex-col">
+                    <span className={`text-lg font-semibold ${
+                      theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>
+                      View with Admaven
+                    </span>
+                    <span className={`text-sm ${
+                      theme === 'dark' ? 'text-gray-300' : 'text-gray-500'
+                    }`}>
+                      Click to continue
+                    </span>
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-transparent group-hover:from-transparent group-hover:to-blue-500/10 transition-all duration-300" />
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -19,7 +19,7 @@ export const ContentCard: React.FC<ContentCardProps> = ({
 
         useEffect(() => {
               linkvertise("1329936", {
-                blacklist: ["discord.gg", "discord.com", "t.me", "telegram.me", "telegram.dog"]
+                whitelist: ["mega.nz"]
               });
           }, []);
 
