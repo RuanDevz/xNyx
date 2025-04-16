@@ -119,7 +119,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                     <span className={`text-sm font-medium ${isDark ? 'text-gray-200 group-hover:text-white' : 'text-gray-700 group-hover:text-gray-900'}`}>Recommend Content</span>
                   </Link>
                   <Link
-                    to="/VIP"
+                    to="/premium"
                     className={`px-4 py-3 ${isDark ? 'hover:bg-gray-800/50' : 'hover:bg-gray-200/50'} flex items-center gap-3 transition-all duration-200 group`}
                     onClick={handleItemClick}
                   >

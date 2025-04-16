@@ -159,7 +159,7 @@ const HeaderLogged: React.FC = () => {
               </a>
               {isVip ? (
                 <Link
-                  to={currentPath === "/" ? "/vip" : "/"}
+                  to={currentPath === "/" ? "/premium" : "/"}
                   className={`text-sm font-medium transition-colors ${
                     theme === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'
                   }`}
@@ -319,7 +319,7 @@ const HeaderLogged: React.FC = () => {
               >
                 {isVip ? (
                   <Link
-                    to="/vip"
+                    to="/premium"
                     className={`relative group overflow-hidden px-4 py-3 rounded-lg font-bold w-full block text-center ${
                       theme === 'dark'
                         ? 'bg-gradient-to-r from-emerald-500 via-emerald-400 to-emerald-500'

@@ -23,7 +23,6 @@ import ViewStats from "./pages/Viewstats";
 import ViewRequests from "./pages/ViewRequests";
 import AccessDenied from "./pages/AccessDenied";
 import AdminDisabledVipUsers from "./pages/AdminDisabledVipUsers";
-import { linkvertise } from "./utils/linkvertise";
 
 interface User {
   isAdmin: boolean;
@@ -100,7 +99,7 @@ const App = () => {
             />
 
             <Route
-              path="/vip"
+              path="/premium"
               element={
                 hasPermission.vip ? (
                   <VIPcontent />
