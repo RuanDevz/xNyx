@@ -159,7 +159,6 @@ export default function Success() {
           ))}
         </motion.div>
 
-        {/* Benefits Section */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

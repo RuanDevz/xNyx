@@ -7,9 +7,6 @@ import { Crown, Sparkles, Shield, Zap, Users, Globe } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
 
 const Plans: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [isVip, setIsVip] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem("Token");
   const email = localStorage.getItem("email");
@@ -20,12 +17,13 @@ const Plans: React.FC = () => {
     const email = localStorage.getItem("email");
   
     if (!token) {
-      alert("Você precisa estar logado para realizar uma compra.");
+      navigate('/register')
+
       return;
     }
   
     if (!email) {
-      alert("Email não encontrado. Faça login novamente.");
+      alert('/login');
       return;
     }
   
@@ -37,11 +35,7 @@ const Plans: React.FC = () => {
       });
   
       const data = await response.json();
-  
-      if (data.isVip) {
-        alert("Você já é VIP. Obrigado por apoiar!");
-        return;
-      }
+
   
       const paymentResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/pay/vip-payment`, {
         method: "POST",
@@ -50,6 +44,7 @@ const Plans: React.FC = () => {
         },
         body: JSON.stringify({ email, planType: plan }),
       });
+      
   
       const paymentData = await paymentResponse.json();
   
@@ -69,7 +64,6 @@ const Plans: React.FC = () => {
 
   return (
     <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'} transition-colors duration-300`}>
-      {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-[500px] h-[500px] -left-48 -top-48 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute w-[500px] h-[500px] -right-48 -bottom-48 bg-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
@@ -118,32 +112,33 @@ const Plans: React.FC = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-          {/* <motion.div
+           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
           >
-            <PlanCard
-              title="FREE ACCESS"
-              price="$0.00"
-              description="Start your journey"
-              features={[
-                "Basic content access",
-                "Community forum access",
-                "Standard support",
-                "Ad-supported experience",
-                "Limited features",
-                "Public chat access",
-                "Basic analytics",
-                "Standard updates"
-              ]}
-              buttonText="Get Started"
-              onButtonClick={handleFreeContentClick}
-              isPopular={false}
-              theme={theme}
-              type="free"
-            />
-          </motion.div> */}
+<PlanCard
+  title="FREE ACCESS"
+  price="$0.00"
+  description="Start your journey"
+  features={[
+    "Basic content access",
+    "Community forum access",
+    "Standard support",
+    "Ad-supported experience",
+    "Limited features",
+    "Public chat access",
+    "Basic analytics",
+    "Standard updates"
+  ]}
+  buttonText="Get Started"
+  onButtonClick={() => Promise.resolve(navigate('/'))}
+  isPopular={false}
+  theme={theme}
+  type="free"
+/>
+
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: -50 }}
