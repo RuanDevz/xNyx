@@ -58,37 +58,37 @@ const Plans: React.FC = () => {
     checkAuthAndVipStatus();
   }, [token, email]);
 
-  const handleAccessClick = async (planType: "monthly" | "annual"): Promise<void> => {
-    const email = localStorage.getItem("email");
-  
-    if (!token || !email) {
-      navigate("/login");
-      return;
+ const handleAccessClick = async (planType: "monthly" | "annual"): Promise<void> => {
+  const email = localStorage.getItem("email");
+
+  if (!token || !email) {
+    navigate("/login");
+    return;
+  }
+
+  localStorage.setItem("selectedPlan", planType);
+
+  try {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/payment`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ planType, email }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.url) {
+      window.location.href = data.url; // redireciona para o checkout do Stripe
+    } else {
+      console.error("Erro ao redirecionar:", data.message || "Erro desconhecido");
     }
-  
-    localStorage.setItem("selectedPlan", planType);
-  
-    try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/payment`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ planType, email }),
-      });
-  
-      const data = await response.json();
-  
-      if (response.ok && data.url) {
-        window.location.href = data.url; // redireciona para o checkout do Stripe
-      } else {
-        console.error("Erro ao redirecionar:", data.message || "Erro desconhecido");
-      }
-    } catch (error) {
-      console.error("Erro ao iniciar o pagamento:", error);
-    }
-  };
+  } catch (error) {
+    console.error("Erro ao iniciar o pagamento:", error);
+  }
+};
   const handleRedirect = async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const email = urlParams.get("email");
@@ -118,6 +118,15 @@ const Plans: React.FC = () => {
     } catch (error) {
       console.error("Error:", error);
     }
+  };
+
+  const handleFreeContentClick = (): Promise<void> => {
+    if (isAuthenticated) {
+      navigate("/");
+    } else {
+      navigate("/");
+    }
+    return Promise.resolve();
   };
 
   useEffect(() => {
