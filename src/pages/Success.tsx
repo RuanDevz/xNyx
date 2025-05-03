@@ -15,45 +15,8 @@ import {
 import { useTheme } from "../contexts/ThemeContext";
 
 export default function Success() {
-  const email = localStorage.getItem("email");
-  const planType = localStorage.getItem("selectedPlan");
-  const navigate = useNavigate();
   const { theme } = useTheme();
 
-  useEffect(() => {
-    const updateVipStatus = async () => {
-      if (!email || !planType) {
-        console.error("Missing email or planType");
-        return;
-      }
-
-      try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/update-vip-status`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, planType }), 
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to update VIP status");
-        }
-
-        console.log("VIP status updated successfully");
-      } catch (error) {
-        console.error("Error updating VIP status:", error);
-        alert("There was an error updating your VIP status. Please contact support.");
-        navigate("/");
-      }
-    };
-
-    if (email && planType) {
-      updateVipStatus();
-    } else {
-      console.error("Email or planType not found in localStorage");
-    }
-  }, [email, planType, navigate]);
 
   const nextSteps = [
     {
@@ -97,7 +60,6 @@ export default function Success() {
       theme === "dark" ? "bg-gray-900" : "bg-gray-50"
     }`}>
       <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-        {/* Success Message */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}

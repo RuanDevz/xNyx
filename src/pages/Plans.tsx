@@ -60,45 +60,35 @@ const Plans: React.FC = () => {
 
   const handleAccessClick = async (planType: "monthly" | "annual"): Promise<void> => {
     const email = localStorage.getItem("email");
-
+  
     if (!token || !email) {
       navigate("/login");
       return;
     }
-
+  
     localStorage.setItem("selectedPlan", planType);
-
+  
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/pay/vip-payment`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, planType }),
-        }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Error creating payment session.");
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/payment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ planType, email }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok && data.url) {
+        window.location.href = data.url; // redireciona para o checkout do Stripe
+      } else {
+        console.error("Erro ao redirecionar:", data.message || "Erro desconhecido");
       }
-
-      const { url } = await response.json();
-      window.open(url, "_blank");
     } catch (error) {
-      console.error("Error creating payment session:", error);
+      console.error("Erro ao iniciar o pagamento:", error);
     }
   };
-
-  const handleFreeContentClick = (): Promise<void> => {
-    if (isAuthenticated) {
-      navigate("/");
-    } else {
-      navigate("/");
-    }
-    return Promise.resolve();
-  };
-
   const handleRedirect = async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const email = urlParams.get("email");
