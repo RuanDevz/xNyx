@@ -71,7 +71,7 @@ const VipContent = () => {
     const handleViewClick = async (linkId: number) => {
         try {
             await axios.post(
-                `${import.meta.env.VITE_BACKEND_URL}/vipcontent/${linkId}/views`,
+                `${import.meta.env.VITE_BACKEND_URL}vipcontent/${linkId}/views`,
                 {},
                 {
                     headers: {

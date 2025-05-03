@@ -3,7 +3,6 @@ import {
   User,
   Crown,
   Star,
-
   XCircle,
   Shield,
   Clock,
@@ -15,6 +14,7 @@ import {
   MessageCircle,
   Send,
   Download,
+  Calendar,
 } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
 
@@ -41,7 +41,6 @@ function Youraccount() {
   const [error, setError] = useState<string | null>(null);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showSubscriptionInfo, setShowSubscriptionInfo] = useState(false);
-  const [lastlogin, setLastlogin] = useState('')
 
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
@@ -87,6 +86,46 @@ function Youraccount() {
     return Math.max(Math.ceil(timeDiff / (1000 * 60 * 60 * 24)), 0);
   };
 
+  const cancelSubscription = async () => {
+    if (!userData?.stripeSubscriptionId) {
+      alert("Assinatura não encontrada.");
+      return;
+    }
+  
+    const token = localStorage.getItem("Token");
+  
+    try {
+      const response = await fetch(`https://x-nyx-backend.vercel.app/webhook`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ subscriptionId: userData.stripeSubscriptionId }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Erro ao cancelar a assinatura.");
+      }
+  
+      const result = await response.json();
+      alert("Assinatura cancelada com sucesso!");
+      // Opcional: recarregar dados do usuário ou redirecionar
+      window.location.reload();
+    } catch (error) {
+      alert("Erro ao cancelar: " + (error instanceof Error ? error.message : "Erro desconhecido"));
+    }
+  };
+
+  const formatExpirationDate = (expirationDate: string): string => {
+    const date = new Date(expirationDate);
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
+
   const darkClasses = {
     bg: "bg-gray-800 text-gray-200",
     bgSecondary: "bg-gray-700 rounded-2xl shadow-lg border border-gray-700/50",
@@ -110,6 +149,8 @@ function Youraccount() {
     infoBg: "bg-gray-700/50",
     infoText: "text-emerald-400",
     contactBg: "bg-gray-800/80",
+    cancelButton: "bg-red-700 text-white hover:bg-red-600",
+    expireDateText: "text-red-300",
   };
 
   const lightClasses = {
@@ -135,6 +176,8 @@ function Youraccount() {
     infoBg: "bg-emerald-50",
     infoText: "text-emerald-600",
     contactBg: "bg-white/90",
+    cancelButton: "bg-red-500 text-white hover:bg-red-600",
+    expireDateText: "text-red-500",
   };
 
   const classes = isDarkMode ? darkClasses : lightClasses;
@@ -262,11 +305,20 @@ function Youraccount() {
           {/* VIP Benefits */}
           {userData.isVip && (
             <div className={`${classes.vipBg} p-6 mb-8`}>
-              <div className="flex items-center gap-3 mb-6">
-                <Crown className={`w-6 h-6 ${classes.iconText}`} />
-                <h2 className={`text-xl font-bold ${classes.text}`}>
-                  Your Premium Benefits
-                </h2>
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <Crown className={`w-6 h-6 ${classes.iconText}`} />
+                  <h2 className={`text-xl font-bold ${classes.text}`}>
+                    Your Premium Benefits
+                  </h2>
+                </div>
+                <button
+                  onClick={() => setShowCancelModal(true)}
+                  className={`${classes.cancelButton} px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center gap-2`}
+                >
+                  <XCircle className="w-5 h-5" />
+                  <span>Cancel Plan</span>
+                </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className={`${classes.vipBenefitBg} p-4 flex items-center gap-3`}>
@@ -302,7 +354,7 @@ function Youraccount() {
             </p>
             <div className="flex flex-wrap gap-4">
               <a
-                href="https://discord.gg/your-invite"
+                href="https://discord.com/invite/SAPZmTTeuN"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-[#5865F2] text-white hover:bg-[#4752C4] transition-all duration-300"
@@ -311,7 +363,7 @@ function Youraccount() {
                 <span>Join Discord</span>
               </a>
               <a
-                href="https://t.me/your-channel"
+                href="https://t.me/+u0Qu9SkPd8EyMzcx"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-[#229ED9] text-white hover:bg-[#1E8BC3] transition-all duration-300"
@@ -335,16 +387,16 @@ function Youraccount() {
 
           {/* Recent Activity */}
           <div className={`${classes.recentActivityBg}`}>
-         {/* Recent Activity */}
-<div className={`${classes.recentActivityBg} p-6 mb-8`}>
-  <div className="flex items-center gap-3 mb-3">
-    <Clock className={`w-5 h-5 ${classes.iconText}`} />
-    <h3 className={`font-semibold ${classes.textSecondary}`}>Recent Activity</h3>
-  </div>
-  <p className={`text-lg font-bold ${classes.text}`}>
-    {formatLastLogin(userData.lastLogin)}
-  </p>
-</div>
+            {/* Recent Activity */}
+            <div className={`${classes.recentActivityBg} p-6 mb-8`}>
+              <div className="flex items-center gap-3 mb-3">
+                <Clock className={`w-5 h-5 ${classes.iconText}`} />
+                <h3 className={`font-semibold ${classes.textSecondary}`}>Recent Activity</h3>
+              </div>
+              <p className={`text-lg font-bold ${classes.text}`}>
+                {formatLastLogin(userData.lastLogin)}
+              </p>
+            </div>
 
             <div className="grid gap-4">
               {userData.recentlyViewed.length > 0 ? (
@@ -380,21 +432,35 @@ function Youraccount() {
             <h2 className={`text-2xl font-bold text-center mb-4 ${classes.text}`}>
               Cancel Subscription
             </h2>
-            <p className={`text-center mb-6 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              To cancel your VIP subscription, please email us at{" "}
-              <a
-                href="mailto:contact@xnyxleaks.com"
-                className="text-emerald-500 hover:underline"
-              >
-                contact@xnyxleaks.com
-              </a>
-              . Our team will process your cancellation within 24 hours.
-            </p>
-            <div className="flex justify-center">
+            <div className="mb-6 text-center">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <Calendar className={`w-5 h-5 ${classes.expireDateText}`} />
+                <p className={`font-medium ${classes.expireDateText}`}>
+                  Your subscription will expire on:
+                </p>
+              </div>
+              <p className={`text-xl font-bold ${classes.text}`}>
+                {formatExpirationDate(userData.vipExpirationDate)}
+              </p>
+              <p className={`mt-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                To cancel your VIP subscription, please email us at{" "}
+                <a
+                  href="mailto:contact@xnyxleaks.com"
+                  className="text-emerald-500 hover:underline"
+                >
+                  contact@xnyxleaks.com
+                </a>
+                . Our team will process your cancellation within 24 hours.
+              </p>
+            </div>
+            <div className="flex justify-center gap-12">
               <button
-                onClick={() => setShowCancelModal(false)}
-                className={`px-6 py-3 rounded-xl font-semibold transition-all ${classes.modalButtonSecondary}`}
+                onClick={() => cancelSubscription()}
+                className={`px-6 py-3 rounded-xl font-semibold transition-all bg-red-500 hover:bg-red-400`}
               >
+                Cancel
+              </button>
+              <button className="px-6 py-3 rounded-xl font-semibold bg-gray-600 hover:bg-gray-500 transition-all"  onClick={() => setShowCancelModal(false)}>
                 Close
               </button>
             </div>

@@ -36,7 +36,7 @@ const Plans: React.FC = () => {
   
       const data = await response.json();
 
-  
+
       const paymentResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/pay/vip-payment`, {
         method: "POST",
         headers: {
