@@ -19,13 +19,31 @@ const Plans: React.FC = () => {
     const token = localStorage.getItem("Token");
     const email = localStorage.getItem("email");
   
+    if (!token) {
+      alert("Você precisa estar logado para realizar uma compra.");
+      return;
+    }
+  
     if (!email) {
       alert("Email não encontrado. Faça login novamente.");
       return;
     }
   
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/pay/payment`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/dashboard`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      const data = await response.json();
+  
+      if (data.isVip) {
+        alert("Você já é VIP. Obrigado por apoiar!");
+        return;
+      }
+  
+      const paymentResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/pay/vip-payment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,15 +51,16 @@ const Plans: React.FC = () => {
         body: JSON.stringify({ email, planType: plan }),
       });
   
-      const data = await response.json();
-      if (data.url) {
-        window.location.href = data.url;
+      const paymentData = await paymentResponse.json();
+  
+      if (paymentData.url) {
+        window.location.href = paymentData.url;
       } else {
-        alert(data.error || "Erro ao redirecionar para o Stripe.");
+        alert(paymentData.error || "Erro ao redirecionar para o Stripe.");
       }
-    } catch (err) {
-      console.error("Erro no checkout:", err);
-      alert("Erro ao iniciar o pagamento.");
+    } catch (error) {
+      console.error("Erro ao iniciar o checkout:", error);
+      alert("Erro ao processar pagamento. Veja o console para detalhes.");
     }
   };
 
