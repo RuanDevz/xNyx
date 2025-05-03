@@ -41,6 +41,7 @@ function Youraccount() {
   const [error, setError] = useState<string | null>(null);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showSubscriptionInfo, setShowSubscriptionInfo] = useState(false);
+  const [lastlogin, setLastlogin] = useState('')
 
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
@@ -147,6 +148,21 @@ function Youraccount() {
       </div>
     );
   }
+
+  const formatLastLogin = (lastLogin: string | null): string => {
+    if (!lastLogin) return "No recent activity";
+  
+    const date = new Date(lastLogin);
+  
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // meses começam em 0
+    const day = String(date.getDate()).padStart(2, "0");
+    const year = String(date.getFullYear()).slice(-2); // pegar só os dois últimos dígitos
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+  
+    return `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`;
+  };
 
   if (error || !userData) {
     return (
@@ -319,12 +335,17 @@ function Youraccount() {
 
           {/* Recent Activity */}
           <div className={`${classes.recentActivityBg}`}>
-            <div className="flex items-center gap-3 mb-6">
-              <Clock className={`w-6 h-6 ${classes.iconText}`} />
-              <h2 className={`text-xl font-bold ${classes.text}`}>
-                Recent Activity
-              </h2>
-            </div>
+         {/* Recent Activity */}
+<div className={`${classes.recentActivityBg} p-6 mb-8`}>
+  <div className="flex items-center gap-3 mb-3">
+    <Clock className={`w-5 h-5 ${classes.iconText}`} />
+    <h3 className={`font-semibold ${classes.textSecondary}`}>Recent Activity</h3>
+  </div>
+  <p className={`text-lg font-bold ${classes.text}`}>
+    {formatLastLogin(userData.lastLogin)}
+  </p>
+</div>
+
             <div className="grid gap-4">
               {userData.recentlyViewed.length > 0 ? (
                 userData.recentlyViewed.map((item, index) => (
@@ -339,8 +360,7 @@ function Youraccount() {
                 ))
               ) : (
                 <div className={`${classes.iconBg} text-center py-8 rounded-lg`}>
-                  <Clock className={`w-12 h-12 ${classes.iconText} mx-auto mb-3`} />
-                  <p className={`${classes.textSecondary}`}>No recent activity</p>
+                  <p className={`${classes.textSecondary}`}></p>
                 </div>
               )}
             </div>

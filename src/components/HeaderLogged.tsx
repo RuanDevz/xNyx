@@ -180,7 +180,6 @@ const HeaderLogged: React.FC = () => {
               <ThemeToggle/>
             </nav>
 
-            {/* User Menu */}
             <UserMenu
               name={name}
               isMenuOpen={isMenuOpen}
@@ -190,7 +189,6 @@ const HeaderLogged: React.FC = () => {
             />
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-4">
             <ThemeToggle />
             <button
