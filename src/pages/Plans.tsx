@@ -15,125 +15,33 @@ const Plans: React.FC = () => {
   const email = localStorage.getItem("email");
   const { theme } = useTheme();
 
-  useEffect(() => {
-    const checkAuthAndVipStatus = async () => {
-      if (!token) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const authResponse = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/auth/dashboard`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        if (authResponse.ok) {
-          setIsAuthenticated(true);
-        } else {
-          localStorage.removeItem("Token");
-          setIsAuthenticated(false);
-        }
-
-        const vipResponse = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/auth/is-vip/${email}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        const data = await vipResponse.json();
-        setIsVip(data.isVip);
-      } catch (error) {
-        console.error("Error checking authentication or VIP status:", error);
-        localStorage.removeItem("Token");
-        setIsAuthenticated(false);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuthAndVipStatus();
-  }, [token, email]);
-
- const handleAccessClick = async (planType: "monthly" | "annual"): Promise<void> => {
-  const email = localStorage.getItem("email");
-
-  if (!token || !email) {
-    navigate("/login");
-    return;
-  }
-
-  localStorage.setItem("selectedPlan", planType);
-
-  try {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/payment`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ planType, email }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok && data.url) {
-      window.location.href = data.url; // redireciona para o checkout do Stripe
-    } else {
-      console.error("Erro ao redirecionar:", data.message || "Erro desconhecido");
-    }
-  } catch (error) {
-    console.error("Erro ao iniciar o pagamento:", error);
-  }
-};
-  const handleRedirect = async () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const email = urlParams.get("email");
-    const planType = urlParams.get("planType");
-    const isCanceled = window.location.pathname.includes("/cancel");
-
+  const handleAccessClick = async (plan: "monthly" | "annual") => {
+    const token = localStorage.getItem("Token");
+  
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/update-vip-status`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            planType,
-            isVip: !isCanceled,
-          }),
-        }
-      );
-
-      if (!response.ok) throw new Error("Error updating VIP status");
-
-      const result = await response.json();
-      console.log(result.message);
-    } catch (error) {
-      console.error("Error:", error);
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/pay/payment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ plan }),
+      });
+  
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert("Erro ao redirecionar para o Stripe.");
+      }
+    } catch (err) {
+      console.error("Erro no checkout:", err);
+      alert("Erro ao iniciar o pagamento.");
     }
   };
 
-  const handleFreeContentClick = (): Promise<void> => {
-    if (isAuthenticated) {
-      navigate("/");
-    } else {
-      navigate("/");
-    }
-    return Promise.resolve();
-  };
-
-  useEffect(() => {
-    handleRedirect();
-  }, []);
-
-  if (loading) return <Loading />;
+  
+  
 
   return (
     <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'} transition-colors duration-300`}>
@@ -186,7 +94,7 @@ const Plans: React.FC = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
@@ -211,7 +119,7 @@ const Plans: React.FC = () => {
               theme={theme}
               type="free"
             />
-          </motion.div>
+          </motion.div> */}
 
           <motion.div
             initial={{ opacity: 0, y: -50 }}
