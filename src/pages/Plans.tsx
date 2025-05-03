@@ -17,22 +17,27 @@ const Plans: React.FC = () => {
 
   const handleAccessClick = async (plan: "monthly" | "annual") => {
     const token = localStorage.getItem("Token");
+    const email = localStorage.getItem("email");
+  
+    if (!email) {
+      alert("Email não encontrado. Faça login novamente.");
+      return;
+    }
   
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/pay/payment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ plan }),
+        body: JSON.stringify({ email, planType: plan }),
       });
   
       const data = await response.json();
       if (data.url) {
         window.location.href = data.url;
       } else {
-        alert("Erro ao redirecionar para o Stripe.");
+        alert(data.error || "Erro ao redirecionar para o Stripe.");
       }
     } catch (err) {
       console.error("Erro no checkout:", err);
