@@ -101,7 +101,6 @@ function Youraccount() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ subscriptionId: userData.stripeSubscriptionId }),
       });
   
       if (!response.ok) {
