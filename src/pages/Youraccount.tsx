@@ -125,6 +125,11 @@ function Youraccount() {
     });
   };
 
+  const Closemodal = () =>{
+    setConfirmcancelmodal(false)
+    setShowCancelModal(false)
+  }
+
   const darkClasses = {
     bg: "bg-gray-800 text-gray-200",
     bgSecondary: "bg-gray-700 rounded-2xl shadow-lg border border-gray-700/50",
@@ -229,12 +234,12 @@ function Youraccount() {
               <div className="flex items-center gap-3">
                 <Mail className={`w-5 h-5 ${classes.infoText}`} />
                 <p className={`${classes.text} font-medium`}>
-                  To cancel your recurring subscription, please email us at{" "}
+                For support join our discord
                   <a
-                    href="mailto:contact@xnyxleaks.com"
+                    href="https://discord.com/invite/SAPZmTTeuN"
                     className={`${classes.infoText} hover:underline`}
                   >
-                    contact@xnyxleaks.com
+                    https://discord.com/invite/SAPZmTTeuN
                   </a>
                 </p>
               </div>
@@ -476,7 +481,7 @@ function Youraccount() {
       <div className="flex justify-end gap-3 mt-6">
         <button
           className={`${classes.modalButtonSecondary} px-4 py-2 rounded`}
-          onClick={() => setConfirmcancelmodal(false)}
+          onClick={Closemodal}
         >
           Close
         </button>
