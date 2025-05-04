@@ -41,6 +41,7 @@ function Youraccount() {
   const [error, setError] = useState<string | null>(null);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showSubscriptionInfo, setShowSubscriptionInfo] = useState(false);
+  const [Confirmcancelmodal, setConfirmcancelmodal] = useState(false)
 
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
@@ -101,6 +102,7 @@ function Youraccount() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({ subscriptionId: userData.stripeSubscriptionId }),
       });
   
       if (!response.ok) {
@@ -108,8 +110,7 @@ function Youraccount() {
       }
   
       const result = await response.json();
-      alert("Assinatura cancelada com sucesso!");
-      window.location.reload();
+      setConfirmcancelmodal(true)
     } catch (error) {
       alert("Erro ao cancelar: " + (error instanceof Error ? error.message : "Erro desconhecido"));
     }
@@ -440,16 +441,6 @@ function Youraccount() {
               <p className={`text-xl font-bold ${classes.text}`}>
                 {formatExpirationDate(userData.vipExpirationDate)}
               </p>
-              <p className={`mt-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                To cancel your VIP subscription, please email us at{" "}
-                <a
-                  href="mailto:contact@xnyxleaks.com"
-                  className="text-emerald-500 hover:underline"
-                >
-                  contact@xnyxleaks.com
-                </a>
-                . Our team will process your cancellation within 24 hours.
-              </p>
             </div>
             <div className="flex justify-center gap-12">
               <button
@@ -465,8 +456,37 @@ function Youraccount() {
           </div>
         </div>
       )}
+
+{Confirmcancelmodal && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className={`w-full max-w-md p-6 ${classes.modalBg} shadow-lg`}>
+      <div className="mb-4">
+        <h2 className="text-xl font-bold mb-2">Subscription canceled</h2>
+        <p className={`${classes.textSecondary}`}>
+        Your subscription has been successfully cancelled. Your Premium access will remain active until{" "}
+          <span className={`${classes.expireDateText} font-semibold`}>
+            {formatExpirationDate(userData.vipExpirationDate)}
+          </span>
+          .
+        </p>
+        <p className="mt-2 text-sm text-gray-500">
+        After this date, your subscription will not be automatically renewed, and no amount will be charged to the payment method used.
+        </p>
+      </div>
+      <div className="flex justify-end gap-3 mt-6">
+        <button
+          className={`${classes.modalButtonSecondary} px-4 py-2 rounded`}
+          onClick={() => setShowCancelModal(false)}
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
+  
 }
 
 export default Youraccount;
