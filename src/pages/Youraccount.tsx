@@ -88,14 +88,14 @@ function Youraccount() {
 
   const cancelSubscription = async () => {
     if (!userData?.stripeSubscriptionId) {
-      alert("Assinatura não encontrada.");
+      alert("Subscription Not Found.");
       return;
     }
   
     const token = localStorage.getItem("Token");
   
     try {
-      const response = await fetch(`https://x-nyx-backend.vercel.app/webhook`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/cancel-subscription`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -105,12 +105,11 @@ function Youraccount() {
       });
   
       if (!response.ok) {
-        throw new Error("Erro ao cancelar a assinatura.");
+        throw new Error("Error");
       }
   
       const result = await response.json();
       alert("Assinatura cancelada com sucesso!");
-      // Opcional: recarregar dados do usuário ou redirecionar
       window.location.reload();
     } catch (error) {
       alert("Erro ao cancelar: " + (error instanceof Error ? error.message : "Erro desconhecido"));
