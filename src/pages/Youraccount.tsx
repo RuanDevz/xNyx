@@ -89,7 +89,7 @@ function Youraccount() {
 
   const cancelSubscription = async () => {
     if (!userData?.stripeSubscriptionId) {
-      alert("Subscription Not Found.");
+      alert("You have already canceled your subscription");
       return;
     }
   
